@@ -5,6 +5,7 @@
     <!-- WinExe: Program.cs (Task 5) provides the Main entry point, so this
          builds as a windowed exe with no console window. -->
     <OutputType>WinExe</OutputType>
+    <UseWindowsForms>true</UseWindowsForms>
     <Nullable>disable</Nullable>
     <ImplicitUsings>disable</ImplicitUsings>
     <AssemblyName>DotGreaterPopup</AssemblyName>
