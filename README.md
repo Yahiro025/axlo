@@ -4,7 +4,7 @@
 
 Your laptop's `.` / `>` physical key is broken, so DotGreaterPopup gives you
 both characters back everywhere in Windows: double right-click anywhere (or
-press Win+J) and a small two-button popup appears next to the cursor; clicking
+press Win+Shift+J) and a small two-button popup appears next to the cursor; clicking
 `.` or `>` types that character into whatever field is under the cursor. It is
 a single tiny WinForms exe (`net48`, no runtime to install), runs from the
 system tray, can start with Windows, and never steals focus or swallows your
@@ -29,7 +29,7 @@ normal right-clicks.
 - **Double right-click** anywhere: the popup opens next to the cursor
   (offset 16 px right, 20 px down, clamped to the monitor work area).
   Your normal context menu is untouched.
-- Or press **Win+J**: the same popup opens at the cursor. Use this whenever a
+- Or press **Win+Shift+J**: the same popup opens at the cursor. Use this whenever a
   second right-click might accidentally hit a menu item.
 - Click the `.` or `>` button. The character is typed into the focused field
   and the popup closes. Clicking away or pressing Esc closes it with no typing.
@@ -46,10 +46,10 @@ normal right-clicks.
    `reg query "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /v DotGreaterPopup`
    should report "unable to find the registry value".
 
-## Win+J fallback
+## Win+Shift+J fallback
 
 Double right-click is the primary trigger, but the second click can land on a
-native menu item. Whenever that is a risk, press **Win+J** instead: it opens
+native menu item. Whenever that is a risk, press **Win+Shift+J** instead: it opens
 the exact same popup at the current cursor position, needs neither `.` nor
 `>`, and still works if hotkey registration ever fails (the app keeps running
 on double-right-click and says so in a tray balloon).
@@ -120,7 +120,7 @@ Task 5 - tray, autostart, hotkey, exit (four checks):
 - [ ] Tray toggle Start with Windows ON: the `DotGreaterPopup` value appears
   under `HKCU\...\Run`; toggle OFF: the value disappears; the checkmark
   matches the real registry state each time the menu opens.
-- [ ] With no working `.` key, Win+J opens the popup at the cursor.
+- [ ] With no working `.` key, Win+Shift+J opens the popup at the cursor.
 - [ ] Tray Exit: hook and tray icon are cleaned up; relaunching works.
 
 DPI + elevated rows:

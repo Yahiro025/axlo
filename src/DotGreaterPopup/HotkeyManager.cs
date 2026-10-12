@@ -4,8 +4,8 @@ using System.Windows.Forms;
 
 namespace DotGreaterPopup
 {
-    // Owns the Win+J global hotkey lifetime only: registers on construction,
-    // unregisters on dispose. Presses surface as HotkeyPressed; the caller
+    // Owns the Win+Shift+J global hotkey lifetime only: registers on
+    // construction, unregisters on dispose. Presses surface as HotkeyPressed; the caller
     // routes that to popup.ShowAt(Cursor.Position).
     //
     // The P/Invoke pair lives here (not in NativeMethods) so this class
@@ -14,6 +14,7 @@ namespace DotGreaterPopup
     public sealed class HotkeyManager : IDisposable
     {
         public const int MOD_WIN = 0x0008;
+        public const int MOD_SHIFT = 0x0004;
         public const int VK_J = 0x4A;
 
         private const int WM_HOTKEY = 0x0312;
@@ -28,12 +29,12 @@ namespace DotGreaterPopup
         {
             _window = new HotkeyWindow(OnHotkeyMessage);
 
-            if (!RegisterHotKey(_window.Handle, HotkeyId, MOD_WIN, VK_J))
+            if (!RegisterHotKey(_window.Handle, HotkeyId, MOD_WIN | MOD_SHIFT, VK_J))
             {
                 int error = Marshal.GetLastWin32Error();
                 _window.DestroyHandle();
                 throw new InvalidOperationException(
-                    "RegisterHotKey(Win+J) failed with Win32 error " + error + ".");
+                    "RegisterHotKey(Win+Shift+J) failed with Win32 error " + error + ".");
             }
         }
 

@@ -20,7 +20,15 @@ namespace DotGreaterPopup
             var inputs = new NativeMethods.INPUT[2];
             inputs[0] = MakeUnicodeInput(c, 0);
             inputs[1] = MakeUnicodeInput(c, NativeMethods.KEYEVENTF_KEYUP);
-            NativeMethods.SendInput((uint)inputs.Length, inputs, Marshal.SizeOf(typeof(NativeMethods.INPUT)));
+            uint sent = NativeMethods.SendInput(
+                (uint)inputs.Length, inputs, Marshal.SizeOf(typeof(NativeMethods.INPUT)));
+            if (sent != inputs.Length)
+            {
+                throw new InvalidOperationException(
+                    "SendInput injected " + sent + " of " + inputs.Length
+                    + " inputs (Win32 error " + Marshal.GetLastWin32Error()
+                    + "). The target window may be elevated.");
+            }
         }
 
         private static NativeMethods.INPUT MakeUnicodeInput(char c, uint extraFlags)

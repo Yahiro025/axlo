@@ -1,6 +1,9 @@
 using System;
 using System.Drawing;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+
+[assembly: InternalsVisibleTo("DotGreaterPopup.Tests")]
 
 namespace DotGreaterPopup
 {
@@ -23,7 +26,23 @@ namespace DotGreaterPopup
         public struct InputUnion
         {
             [FieldOffset(0)]
+            public MOUSEINPUT Mi;
+            [FieldOffset(0)]
             public KEYBDINPUT Ki;
+        }
+
+        // Present so the union spans the native size (MOUSEINPUT is the
+        // largest member). Without it Marshal.SizeOf(INPUT) is 32, but
+        // SendInput requires the native 40 on x64 and fails the call.
+        [StructLayout(LayoutKind.Sequential)]
+        public struct MOUSEINPUT
+        {
+            public int Dx;
+            public int Dy;
+            public uint MouseData;
+            public uint DwFlags;
+            public uint Time;
+            public IntPtr DwExtraInfo;
         }
 
         [StructLayout(LayoutKind.Sequential)]

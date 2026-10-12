@@ -72,7 +72,18 @@ namespace DotGreaterPopup
                 popup = new DotGreaterPopupForm(delegate(char c)
                 {
                     popup.HidePopup();
-                    _typer.Insert(c);
+                    try
+                    {
+                        _typer.Insert(c);
+                    }
+                    catch (InvalidOperationException ex)
+                    {
+                        _icon.ShowBalloonTip(
+                            5000,
+                            "DotGreaterPopup",
+                            "Could not type here: " + ex.Message,
+                            ToolTipIcon.Warning);
+                    }
                 });
                 _popup = popup;
 
@@ -82,8 +93,10 @@ namespace DotGreaterPopup
                 };
                 _trigger.Install();
 
-                // Fallback trigger: Win+J opens the same popup at the cursor.
-                // If registration fails, the app still runs on double-click.
+                // Fallback trigger: Win+Shift+J opens the same popup at the
+                // cursor. (Win+J without Shift is commonly claimed by other
+                // tools, so Shift is part of the chord.) If registration
+                // fails, the app still runs on double-click.
                 HotkeyManager hotkey = null;
                 try
                 {
@@ -152,7 +165,7 @@ namespace DotGreaterPopup
                     _icon.ShowBalloonTip(
                         5000,
                         "DotGreaterPopup",
-                        "Win+J fallback unavailable; double-right-click still works.",
+                        "Win+Shift+J fallback unavailable; double-right-click still works.",
                         ToolTipIcon.Warning);
                 }
             }
