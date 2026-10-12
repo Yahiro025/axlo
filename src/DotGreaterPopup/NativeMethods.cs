@@ -45,7 +45,7 @@ namespace DotGreaterPopup
         public const int SM_CXDOUBLECLK = 36;
         public const int SM_CYDOUBLECLK = 37;
 
-        [UnmanagedFunctionPointer(CallingConvention.WinApi)]
+        [UnmanagedFunctionPointer(CallingConvention.Winapi)]
         public delegate IntPtr LowLevelMouseProc(int nCode, IntPtr wParam, IntPtr lParam);
 
         [DllImport("user32.dll", SetLastError = true)]
