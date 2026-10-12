@@ -2,9 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
-    <!-- Library for now: no entry point exists until Task 5 adds Program.cs,
-         which flips this to WinExe. Keeps `dotnet test` green at Task 1. -->
-    <OutputType>Library</OutputType>
+    <!-- WinExe: Program.cs (Task 5) provides the Main entry point, so this
+         builds as a windowed exe with no console window. -->
+    <OutputType>WinExe</OutputType>
     <Nullable>disable</Nullable>
     <ImplicitUsings>disable</ImplicitUsings>
     <AssemblyName>DotGreaterPopup</AssemblyName>
