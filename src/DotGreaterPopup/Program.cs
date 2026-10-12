@@ -21,7 +21,20 @@ namespace DotGreaterPopup
         private static void Main()
         {
             bool createdNew;
-            using (var mutex = new Mutex(true, MutexName, out createdNew))
+            Mutex mutex;
+            try
+            {
+                mutex = new Mutex(true, MutexName, out createdNew);
+            }
+            catch (AbandonedMutexException)
+            {
+                // Prior instance died while holding it; this thread now
+                // owns the abandoned mutex, so take over as the instance.
+                mutex = new Mutex(true, MutexName, out createdNew);
+                createdNew = true;
+            }
+
+            using (mutex)
             {
                 if (!createdNew)
                 {
@@ -46,6 +59,7 @@ namespace DotGreaterPopup
             private readonly DotGreaterPopupForm _popup;
             private readonly HotkeyManager _hotkey;
             private readonly NotifyIcon _icon;
+            private readonly ContextMenuStrip _menu;
             private readonly ToolStripMenuItem _autostartItem;
             private bool _exiting;
 
@@ -132,9 +146,8 @@ namespace DotGreaterPopup
                 _icon.Icon = SystemIcons.Application;
                 _icon.Text = "DotGreaterPopup";
                 _icon.ContextMenuStrip = menu;
-                _icon.Visible = true;
-
-                if (_hotkey == null)
+                _menu = menu;
+                _icon.Visible = true;                if (_hotkey == null)
                 {
                     _icon.ShowBalloonTip(
                         5000,
@@ -156,6 +169,7 @@ namespace DotGreaterPopup
                 // then hotkey, then the popup.
                 _icon.Visible = false;
                 _icon.Dispose();
+                _menu.Dispose();
                 _trigger.Dispose();
                 if (_hotkey != null)
                 {
