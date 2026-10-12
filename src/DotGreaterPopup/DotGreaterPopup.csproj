@@ -9,6 +9,7 @@
     <ImplicitUsings>disable</ImplicitUsings>
     <AssemblyName>DotGreaterPopup</AssemblyName>
     <RootNamespace>DotGreaterPopup</RootNamespace>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
 
 </Project>
