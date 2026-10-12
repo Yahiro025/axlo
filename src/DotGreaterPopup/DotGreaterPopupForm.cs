@@ -31,6 +31,13 @@ namespace DotGreaterPopup
 
         private readonly Action<char> _onPick;
 
+        // One-shot re-pin: the low-level hook fires before the target app
+        // shows its own context menu for the same click, so a freshly shown
+        // popup can end up underneath it. Reasserting topmost ~250ms later
+        // puts us back above once the native menu has settled. Runs on the
+        // UI thread; NOACTIVATE keeps focus where it was.
+        private readonly Timer _repinTimer;
+
         public DotGreaterPopupForm(Action<char> onPick)
         {
             if (onPick == null)
@@ -82,6 +89,22 @@ namespace DotGreaterPopup
             {
                 HidePopup();
             };
+
+            _repinTimer = new Timer();
+            _repinTimer.Interval = 250;
+            _repinTimer.Tick += delegate(object sender, EventArgs e)
+            {
+                _repinTimer.Stop();
+                if (IsDisposed || Disposing || !Visible)
+                {
+                    return;
+                }
+                NativeMethods.SetWindowPos(
+                    Handle,
+                    NativeMethods.HWND_TOPMOST,
+                    0, 0, 0, 0,
+                    NativeMethods.SWP_NOMOVE | NativeMethods.SWP_NOSIZE | NativeMethods.SWP_NOACTIVATE);
+            };
         }
 
         protected override bool ShowWithoutActivation
@@ -116,12 +139,24 @@ namespace DotGreaterPopup
             Rectangle workArea = Screen.FromPoint(cursor).WorkingArea;
             Location = PopupPosition.Clamp(want, Size, workArea);
             Show();
+            _repinTimer.Stop();
+            _repinTimer.Start();
         }
 
         public void HidePopup()
         {
             // Idempotent: hiding an already-hidden form is a safe no-op.
+            _repinTimer.Stop();
             Hide();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _repinTimer.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }
