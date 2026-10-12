@@ -1,0 +1,127 @@
+using System;
+using System.Drawing;
+using System.Windows.Forms;
+
+namespace DotGreaterPopup
+{
+    // Borderless tool-window popup with one button per CharSet.Chars entry.
+    //
+    // Never steals focus: ShowWithoutActivation returns true and the extended
+    // style carries WS_EX_NOACTIVATE (plus TOOLWINDOW and TOPMOST), so showing
+    // the popup leaves the foreground window (for example Notepad) active and
+    // clicking a button does not activate this form either.
+    //
+    // The form owns visibility state only. The caller passes Action<char>
+    // onPick; a button click invokes it and then hides the popup. Typing
+    // itself lives in CharTyper; this form never touches SendInput.
+    public sealed class DotGreaterPopupForm : Form
+    {
+        // Extended styles applied in CreateParams below.
+        private const int WS_EX_NOACTIVATE = 0x08000000;
+        private const int WS_EX_TOOLWINDOW = 0x00000080;
+        private const int WS_EX_TOPMOST = 0x00000008;
+
+        // Popup origin offset from the cursor, in pixels.
+        private const int OffsetX = 16;
+        private const int OffsetY = 20;
+
+        // Buttons stay comfortably clickable (brief requires at least 48px).
+        private const int ButtonWidth = 64;
+        private const int ButtonHeight = 48;
+
+        private readonly Action<char> _onPick;
+
+        public DotGreaterPopupForm(Action<char> onPick)
+        {
+            if (onPick == null)
+            {
+                throw new ArgumentNullException("onPick");
+            }
+
+            _onPick = onPick;
+
+            FormBorderStyle = FormBorderStyle.None;
+            TopMost = true;
+            ShowInTaskbar = false;
+            StartPosition = FormStartPosition.Manual;
+            KeyPreview = true;
+
+            var panel = new FlowLayoutPanel();
+            panel.Dock = DockStyle.Fill;
+            panel.FlowDirection = FlowDirection.LeftToRight;
+            panel.WrapContents = false;
+            panel.Padding = new Padding(8);
+
+            // One button per charset entry. Loop the single CharSet.Chars
+            // list; never hardcode '.' / '>' here.
+            foreach (char c in CharSet.Chars)
+            {
+                char ch = c;
+                var button = new Button();
+                button.Text = ch.ToString();
+                button.Font = new Font(button.Font.FontFamily, 16f, FontStyle.Bold);
+                button.Size = new Size(ButtonWidth, ButtonHeight);
+                button.MinimumSize = new Size(ButtonWidth, ButtonHeight);
+                button.Margin = new Padding(4);
+                button.Click += delegate(object sender, EventArgs e)
+                {
+                    _onPick(ch);
+                    HidePopup();
+                };
+                panel.Controls.Add(button);
+            }
+
+            Controls.Add(panel);
+
+            // Fixed client size so ShowAt can clamp before first show.
+            // Width: padding 8*2 + per button (margin 4 + 64 + margin 4) * 2 = 160.
+            // Height: padding 8*2 + (margin 4 + 48 + margin 4) = 72.
+            ClientSize = new Size(160, 72);
+
+            Deactivate += delegate(object sender, EventArgs e)
+            {
+                HidePopup();
+            };
+        }
+
+        protected override bool ShowWithoutActivation
+        {
+            get { return true; }
+        }
+
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams cp = base.CreateParams;
+                cp.ExStyle |= WS_EX_NOACTIVATE | WS_EX_TOOLWINDOW | WS_EX_TOPMOST;
+                return cp;
+            }
+        }
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == Keys.Escape)
+            {
+                HidePopup();
+                return true;
+            }
+
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        public void ShowAt(Point cursor)
+        {
+            Point want = new Point(cursor.X + OffsetX, cursor.Y + OffsetY);
+            Rectangle workArea = Screen.FromPoint(cursor).WorkingArea;
+            Location = PopupPosition.Clamp(want, Size, workArea);
+            Show();
+        }
+
+        public void HidePopup()
+        {
+            // Idempotent: hiding an already-hidden form is a safe no-op.
+            Hide();
+        }
+    }
+}
