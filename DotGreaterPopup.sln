@@ -1,0 +1,24 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotGreaterPopup", "src\DotGreaterPopup\DotGreaterPopup.csproj", "{75DB304F-EE72-4D32-9652-55B443335610}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotGreaterPopup.Tests", "tests\DotGreaterPopup.Tests\DotGreaterPopup.Tests.csproj", "{9CB61CA4-11C3-4FDA-9894-5E0098468646}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{75DB304F-EE72-4D32-9652-55B443335610}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75DB304F-EE72-4D32-9652-55B443335610}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75DB304F-EE72-4D32-9652-55B443335610}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75DB304F-EE72-4D32-9652-55B443335610}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CB61CA4-11C3-4FDA-9894-5E0098468646}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CB61CA4-11C3-4FDA-9894-5E0098468646}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CB61CA4-11C3-4FDA-9894-5E0098468646}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CB61CA4-11C3-4FDA-9894-5E0098468646}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
