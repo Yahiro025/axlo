@@ -65,11 +65,11 @@ namespace DotGreaterPopup
         public const int SM_CYDOUBLECLK = 37;
 
         [UnmanagedFunctionPointer(CallingConvention.Winapi)]
-        public delegate IntPtr LowLevelMouseProc(int nCode, IntPtr wParam, IntPtr lParam);
+        public delegate IntPtr LowLevelHookProc(int nCode, IntPtr wParam, IntPtr lParam);
 
         [DllImport("user32.dll", SetLastError = true)]
         public static extern IntPtr SetWindowsHookEx(
-            int idHook, LowLevelMouseProc lpfn, IntPtr hMod, uint dwThreadId);
+            int idHook, LowLevelHookProc lpfn, IntPtr hMod, uint dwThreadId);
 
         [DllImport("user32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
@@ -96,6 +96,11 @@ namespace DotGreaterPopup
 
         [DllImport("user32.dll")]
         public static extern int GetSystemMetrics(int nIndex);
+
+        // ---- Task: Esc-to-close watcher (pass-through keyboard hook) ----
+        public const int WH_KEYBOARD_LL = 13;
+        public const int WM_KEYDOWN = 0x0100;
+        public const int VK_ESCAPE = 0x1B;
 
         [DllImport("user32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]

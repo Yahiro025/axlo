@@ -28,7 +28,7 @@ namespace DotGreaterPopup
 
         // Rooted so the GC never moves/collects the callback while the OS
         // holds its function pointer (see SetWindowsHookEx remarks).
-        private NativeMethods.LowLevelMouseProc _hookProc;
+        private NativeMethods.LowLevelHookProc _hookProc;
         private IntPtr _hookHandle = IntPtr.Zero;
         private SynchronizationContext _uiContext;
         private bool _hasLastUp;

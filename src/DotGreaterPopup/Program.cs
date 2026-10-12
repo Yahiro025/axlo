@@ -54,6 +54,7 @@ namespace DotGreaterPopup
         private sealed class TrayContext : ApplicationContext
         {
             private readonly DoubleRightClickTrigger _trigger = new DoubleRightClickTrigger();
+            private readonly EscapeKeyWatcher _escWatcher = new EscapeKeyWatcher();
             private readonly CharTyper _typer = new CharTyper();
             private readonly AutostartManager _autostart = new AutostartManager();
             private readonly DotGreaterPopupForm _popup;
@@ -92,6 +93,16 @@ namespace DotGreaterPopup
                     _popup.ShowAt(pt);
                 };
                 _trigger.Install();
+
+                // Esc closes the popup even though it never has focus.
+                // The watcher passes every key through, so Esc works
+                // everywhere exactly as before. HidePopup is idempotent,
+                // so presses while hidden are safe no-ops.
+                _escWatcher.EscapePressed += delegate
+                {
+                    _popup.HidePopup();
+                };
+                _escWatcher.Install();
 
                 // Fallback trigger: Win+Shift+J opens the same popup at the
                 // cursor. (Win+J without Shift is commonly claimed by other
@@ -184,6 +195,7 @@ namespace DotGreaterPopup
                 _icon.Dispose();
                 _menu.Dispose();
                 _trigger.Dispose();
+                _escWatcher.Dispose();
                 if (_hotkey != null)
                 {
                     _hotkey.Dispose();
