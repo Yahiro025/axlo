@@ -37,6 +37,7 @@ namespace DotGreaterPopup
         // puts us back above once the native menu has settled. Runs on the
         // UI thread; NOACTIVATE keeps focus where it was.
         private readonly Timer _repinTimer;
+        private Point _lastCursor;
 
         public DotGreaterPopupForm(Action<char> onPick)
         {
@@ -99,12 +100,41 @@ namespace DotGreaterPopup
                 {
                     return;
                 }
+                TryAnchorToMenu();
                 NativeMethods.SetWindowPos(
                     Handle,
                     NativeMethods.HWND_TOPMOST,
                     0, 0, 0, 0,
                     NativeMethods.SWP_NOMOVE | NativeMethods.SWP_NOSIZE | NativeMethods.SWP_NOACTIVATE);
             };
+        }
+
+        // Move beside the native context menu when one is actually showing
+        // near the cursor. System menus are #32768 windows; browsers and
+        // other custom menus leave no such window, so the cursor offset
+        // from ShowAt stands. The proximity guard ignores stale menus
+        // from other apps.
+        private void TryAnchorToMenu()
+        {
+            IntPtr menu = NativeMethods.FindWindow("#32768", null);
+            if (menu == IntPtr.Zero)
+            {
+                return;
+            }
+            NativeMethods.RECT rect;
+            if (!NativeMethods.GetWindowRect(menu, out rect))
+            {
+                return;
+            }
+            var menuRect = Rectangle.FromLTRB(rect.Left, rect.Top, rect.Right, rect.Bottom);
+            Rectangle near = menuRect;
+            near.Inflate(300, 300);
+            if (!near.Contains(_lastCursor))
+            {
+                return;
+            }
+            Rectangle workArea = Screen.FromPoint(_lastCursor).WorkingArea;
+            Location = PopupPosition.PlaceBesideMenu(_lastCursor, Size, menuRect, workArea);
         }
 
         protected override bool ShowWithoutActivation
@@ -135,6 +165,7 @@ namespace DotGreaterPopup
 
         public void ShowAt(Point cursor)
         {
+            _lastCursor = cursor;
             Point want = new Point(cursor.X + OffsetX, cursor.Y + OffsetY);
             Rectangle workArea = Screen.FromPoint(cursor).WorkingArea;
             Location = PopupPosition.Clamp(want, Size, workArea);

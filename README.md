@@ -113,6 +113,10 @@ Task 4 - popup behavior (five checks):
 - [ ] Press Esc with the popup open: it closes, nothing is typed.
 - [ ] Open it at screen edges, at 150% DPI, and on a second monitor: the
   popup stays fully onscreen every time.
+- [ ] Double right-click in Notepad: the popup settles beside the native
+  menu (right side, or left near the screen edge), never hidden behind it.
+- [ ] Double right-click in a browser: no system menu exists, so the popup
+  keeps the cursor-offset position above the page menu.
 
 Task 5 - tray, autostart, hotkey, exit (four checks):
 
