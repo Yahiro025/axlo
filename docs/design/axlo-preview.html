@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>axlo — design preview</title>
+<link rel="icon" type="image/png" href="axlo-32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@700,800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#0F6CBD; --primary-hover:#0B5A9E; --on-primary:#FFFFFF;
+  --surface:#FFFFFF; --surface-2:#F3F2F1; --text:#1B1A19; --muted:#605E5C;
+  --border:#E1DFDD; --success:#107C10; --warning:#CA5010; --error:#C42B1C;
+  --taskbar:#F3F2F1; --taskbar-dark:#202020;
+  --radius-sm:4px; --radius-md:6px; --radius-lg:8px;
+  --font-display:'Cabinet Grotesk','Source Sans 3',sans-serif;
+  --font-body:'Source Sans 3','Segoe UI',sans-serif;
+  --font-mono:'JetBrains Mono',monospace;
+}
+html[data-theme="dark"]{
+  --surface:#1B1A19; --surface-2:#252423; --text:#F3F2F1; --muted:#A19F9D;
+  --border:#3B3A39; --taskbar:#202020;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:var(--font-body);background:var(--surface);color:var(--text);line-height:1.5}
+.wrap{max-width:960px;margin:0 auto;padding:24px 20px 64px}
+.topbar{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:8px}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-weight:700;font-size:1.75rem;letter-spacing:-0.02em}
+.badge{font-family:var(--font-mono);font-weight:700;font-size:.8rem;color:var(--muted);border:1px solid var(--border);border-radius:var(--radius-sm);padding:2px 8px}
+.btn{font-family:var(--font-body);font-weight:600;border:1px solid transparent;border-radius:var(--radius-md);padding:8px 16px;cursor:pointer;font-size:.95rem}
+.btn-primary{background:var(--primary);color:var(--on-primary)}
+.btn-primary:hover{background:var(--primary-hover)}
+.btn-ghost{background:transparent;color:var(--text);border-color:var(--border)}
+.btn:focus-visible,input:focus-visible,.popup button:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
+.btn:active,.popup button:active{opacity:.85}
+::selection{background:var(--primary);color:#fff}
+.theme-toggle{margin-left:auto}
+h1{font-family:var(--font-display);font-weight:700;letter-spacing:-0.02em;font-size:clamp(2rem,4vw,3rem);margin:.5em 0 .2em}
+h2{font-family:var(--font-display);font-weight:700;font-size:1.4rem;margin:2.2em 0 .4em;padding-top:1em;border-top:1px solid var(--border)}
+.sub{color:var(--text);max-width:60ch}
+.section-note{color:var(--muted);font-size:.9rem}
+/* specimens */
+.spec{border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;margin:12px 0;background:var(--surface)}
+.spec-display{font-family:var(--font-display);font-weight:700;font-size:2rem;letter-spacing:-0.02em}
+.spec-body{font-size:1rem}
+.spec-mono{font-family:var(--font-mono);font-weight:500}
+/* swatches */
+.swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin:12px 0}
+.swatch{border:1px solid var(--border);border-radius:var(--radius-md);overflow:hidden}
+.swatch i{display:block;height:56px}
+.swatch div{padding:8px 10px;font-size:.8rem}
+.swatch code{font-family:var(--font-mono);font-size:.75rem;color:var(--muted)}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:10px 0}
+input[type=text]{font:inherit;color:var(--text);background:var(--surface);border:1px solid var(--muted);border-radius:var(--radius-sm);padding:8px 10px}
+.alert{border-radius:var(--radius-md);padding:10px 14px;margin:8px 0;font-size:.9rem}
+.alert.ok{background:color-mix(in srgb,var(--success) 12%,transparent);border:1px solid var(--success)}
+.alert.warn{background:color-mix(in srgb,var(--warning) 12%,transparent);border:1px solid var(--warning)}
+.alert.err{background:color-mix(in srgb,var(--error) 12%,transparent);border:1px solid var(--error)}
+/* preview 1: taskbars */
+.taskbar{border-radius:var(--radius-md);padding:10px 14px;display:flex;align-items:center;gap:10px;margin:10px 0;border:1px solid var(--border)}
+.taskbar.light{background:#F3F2F1;color:#1B1A19}
+.taskbar.dark{background:var(--taskbar-dark);color:#F3F2F1;border-color:#3B3A39}
+.taskbar .spacer{flex:1}
+.tray-icons{display:flex;gap:12px;align-items:center}
+.tray-icons svg{display:block}
+.icon-label{font-family:var(--font-mono);font-size:.72rem;color:var(--muted)}
+/* preview 2: popup */
+.desktop{background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:48px 20px;position:relative;overflow:hidden}
+.ctxmenu{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);box-shadow:0 4px 16px rgba(0,0,0,.18);width:190px;font-size:.85rem;padding:4px;position:absolute;left:12%;top:26px}
+.ctxmenu div{padding:6px 10px;border-radius:4px}
+.ctxmenu div:hover{background:var(--surface-2)}
+.popup{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);box-shadow:0 4px 16px rgba(0,0,0,.22);width:172px;padding:10px;position:absolute;left:calc(12% + 206px);top:26px}
+.popup .p-badge{font-family:var(--font-mono);font-size:.75rem;font-weight:700;color:var(--muted);margin-bottom:8px}
+.popup .p-btns{display:flex;gap:8px}
+.popup button{flex:1;font-family:'Segoe UI',sans-serif;font-size:1.05rem;font-weight:600;background:var(--primary);color:var(--on-primary);border:none;border-radius:var(--radius-md);padding:8px 0;cursor:pointer}
+.popup button:hover{background:var(--primary-hover)}
+@media(max-width:640px){.ctxmenu{left:4%}.popup{left:auto;right:4%;top:150px}}
+/* preview 3: readme */
+.readme{border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
+.readme header{padding:28px 24px 8px}
+.readme h3{font-family:var(--font-display);font-size:1.8rem;margin:0;letter-spacing:-0.02em;display:flex;align-items:center;gap:10px}
+.readme .promise{color:var(--muted);margin:6px 0 0}
+.readme .docbody{padding:8px 24px 24px}
+.readme code{font-family:var(--font-mono);font-size:.85em;background:var(--surface-2);border:1px solid var(--border);border-radius:4px;padding:1px 6px}
+.readme pre{font-family:var(--font-mono);font-size:.8rem;background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius-md);padding:12px;overflow:auto}
+footer{margin-top:48px;color:var(--muted);font-size:.85rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <span class="brand" role="img" aria-label="axlo">
+      <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14" fill="#0F6CBD"/><path d="M12.5 10.5 L20 16 L12.5 21.5" stroke="#fff" stroke-width="3.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      axl<svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14" fill="#0F6CBD"/><path d="M12.5 10.5 L20 16 L12.5 21.5" stroke="#fff" stroke-width="3.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </span>
+    <span class="badge">axlo .&gt;</span>
+    <button class="btn btn-ghost theme-toggle" id="themeBtn" type="button">Toggle dark</button>
+  </div>
+  <h1>axlo design preview</h1>
+  <p class="sub">Parent brand for tiny Windows fixes. First product: DotGreaterPopup. One blue, one mono glyph, nothing decorative. This page uses the real tokens and fonts from DESIGN.md.</p>
+
+  <h2>Type specimens</h2>
+  <p class="section-note">Display: Cabinet Grotesk 700 (Fontshare). Body: Source Sans 3 (Google Fonts). Mono: JetBrains Mono (Google Fonts). In-app UI stays Segoe UI native.</p>
+  <div class="spec"><div class="spec-display">axlo restores your broken keys</div><div class="section-note">Cabinet Grotesk 700, -0.02em</div></div>
+  <div class="spec"><div class="spec-body"><strong>Install.</strong> Copy DotGreaterPopup.exe to a permanent folder and run it. Check <strong>Start with Windows</strong> in the tray menu. Double right-click anywhere and the popup opens beside your cursor.</div><div class="section-note">Source Sans 3 400/600</div></div>
+  <div class="spec"><div class="spec-mono">axlo .&gt; &nbsp;·&nbsp; Win+Shift+J &nbsp;·&nbsp; SendInput(KEYEVENTF_UNICODE)</div><div class="section-note">JetBrains Mono 500/700</div></div>
+
+  <h2>Color + components</h2>
+  <div class="swatches">
+    <div class="swatch"><i style="background:#0F6CBD"></i><div>Primary / accent<br><code>#0F6CBD</code></div></div>
+    <div class="swatch"><i style="background:#FFFFFF;border-bottom:1px solid var(--border)"></i><div>Surface<br><code>#FFFFFF</code></div></div>
+    <div class="swatch"><i style="background:#1B1A19"></i><div>Text<br><code>#1B1A19</code></div></div>
+    <div class="swatch"><i style="background:#605E5C"></i><div>Muted<br><code>#605E5C</code></div></div>
+    <div class="swatch"><i style="background:#107C10"></i><div>Success<br><code>#107C10</code></div></div>
+    <div class="swatch"><i style="background:#CA5010"></i><div>Warning<br><code>#CA5010</code></div></div>
+    <div class="swatch"><i style="background:#C42B1C"></i><div>Error<br><code>#C42B1C</code></div></div>
+  </div>
+  <div class="row">
+    <button class="btn btn-primary" type="button">Build Release exe</button>
+    <button class="btn btn-ghost" type="button">Read install steps</button>
+    <input type="text" value="Win+Shift+J opens the popup" aria-label="hotkey demo" size="30">
+  </div>
+  <div class="alert ok">Hook healthy: double right-click opens the popup exactly once.</div>
+  <div class="alert warn">Hotkey busy: Win+J is held by another app, using Win+Shift+J.</div>
+  <div class="alert err">SendInput failed: run as administrator for elevated windows.</div>
+
+  <h2>Preview A — tray icon set</h2>
+  <p class="section-note">Monochrome dot-o glyph, currentColor, drawn at 16/20/24 on both taskbar themes. Never contains text.</p>
+  <div class="taskbar light"><span>axlo file explorer</span><span class="spacer"></span><span class="tray-icons">
+    <span><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="#1B1A19"/><path d="M6 4.6 L10.4 8 L6 11.4" stroke="#F3F2F1" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="icon-label">16</span></span>
+    <span><svg width="20" height="20" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="#1B1A19"/><path d="M6 4.6 L10.4 8 L6 11.4" stroke="#F3F2F1" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="icon-label">20</span></span>
+    <span><svg width="24" height="24" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="#1B1A19"/><path d="M6 4.6 L10.4 8 L6 11.4" stroke="#F3F2F1" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="icon-label">24</span></span>
+  </span></div>
+  <div class="taskbar dark"><span>axlo file explorer</span><span class="spacer"></span><span class="tray-icons">
+    <span><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="#F3F2F1"/><path d="M6 4.6 L10.4 8 L6 11.4" stroke="#202020" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="icon-label">16</span></span>
+    <span><svg width="20" height="20" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="#F3F2F1"/><path d="M6 4.6 L10.4 8 L6 11.4" stroke="#202020" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="icon-label">20</span></span>
+    <span><svg width="24" height="24" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="#F3F2F1"/><path d="M6 4.6 L10.4 8 L6 11.4" stroke="#202020" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="icon-label">24</span></span>
+  </span></div>
+
+  <h2>Preview B — popup beside the native menu</h2>
+  <p class="section-note">Popup measures the real menu and settles beside it. Buttons stay Segoe UI; only the badge is brand mono.</p>
+  <div class="desktop">
+    <div class="ctxmenu"><div>Undo</div><div>Cut</div><div>Copy</div><div>Paste</div></div>
+    <div class="popup"><div class="p-badge">axlo .&gt;</div><div class="p-btns"><button type="button">.</button><button type="button">&gt;</button></div></div>
+  </div>
+
+  <h2>Preview C — README header</h2>
+  <div class="readme">
+    <header><h3>
+      <svg width="26" height="26" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14" fill="#0F6CBD"/><path d="M12.5 10.5 L20 16 L12.5 21.5" stroke="#fff" stroke-width="3.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      axlo <span class="badge">.&gt; popup</span></h3>
+      <p class="promise">Tiny Windows fixes that just work. First up: your broken <code>.</code> / <code>&gt;</code> key, back everywhere.</p>
+    </header>
+    <div class="docbody">
+      <p><strong>Use.</strong> Double right-click anywhere, or press <code>Win+Shift+J</code>. Click <code>.</code> or <code>&gt;</code>; the popup types it and closes.</p>
+      <pre>msbuild DotGreaterPopup.sln /p:Configuration=Release
+dotnet test DotGreaterPopup.sln -c Release</pre>
+    </div>
+  </div>
+
+  <footer>axlo preview · tokens match DESIGN.md · Cabinet Grotesk / Source Sans 3 / JetBrains Mono · Segoe UI inside the app only</footer>
+</div>
+<script>
+document.getElementById('themeBtn').addEventListener('click',function(){
+  var h=document.documentElement;
+  h.setAttribute('data-theme',h.getAttribute('data-theme')==='dark'?'light':'dark');
+});
+</script>
+</body>
+</html>
