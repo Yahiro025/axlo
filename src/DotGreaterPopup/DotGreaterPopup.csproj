@@ -15,4 +15,10 @@
     <ApplicationIcon>axlo.ico</ApplicationIcon>
   </PropertyGroup>
 
+  <ItemGroup>
+    <!-- Lets net48 build on machines with only the .NET SDK installed
+         (no Framework targeting pack needed). Build-only, never flows. -->
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="All" />
+  </ItemGroup>
+
 </Project>
