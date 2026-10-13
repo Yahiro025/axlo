@@ -11,6 +11,8 @@
     <AssemblyName>DotGreaterPopup</AssemblyName>
     <RootNamespace>DotGreaterPopup</RootNamespace>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+    <!-- axlo dot-o mark (docs/design/axlo-mark.svg master). -->
+    <ApplicationIcon>axlo.ico</ApplicationIcon>
   </PropertyGroup>
 
 </Project>
