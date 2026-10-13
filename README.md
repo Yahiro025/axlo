@@ -12,10 +12,19 @@ normal right-clicks.
 
 ## Install
 
-1. Build (on a Windows laptop with MSBuild):
-   `msbuild DotGreaterPopup.sln /p:Configuration=Release`
-   This produces one small `Release/DotGreaterPopup.exe` that runs on stock
-   Windows 10/11 with no extra install.
+Download (easiest): grab `DotGreaterPopup.exe` from
+https://github.com/Yahiro025/axlo/releases, copy it to a permanent
+folder, and run it. Then continue at step 2 below.
+
+Build from source:
+
+1. Prerequisite (build from source): the .NET 8 SDK
+   (https://dotnet.microsoft.com/download, any recent 8.x). No Visual
+   Studio or Framework dev pack needed. Then build the Release exe:
+   `dotnet build DotGreaterPopup.sln -c Release`
+   This produces one small
+   `src\DotGreaterPopup\bin\Release\net48\DotGreaterPopup.exe` that runs
+   on stock Windows 10/11 with no extra install.
 2. Copy `DotGreaterPopup.exe` to a permanent folder, e.g.
    `C:\Tools\DotGreaterPopup\DotGreaterPopup.exe`, and run it. A tray icon
    appears (no console window).
@@ -75,22 +84,20 @@ right-click the exe and choose Run as administrator for that session.
 
 ## App manifest note
 
-`src/DotGreaterPopup/app.manifest` pins `asInvoker` (no UAC prompt) with no
-other execution settings. It is not wired into the build yet. To wire it, add
-this one line inside the `<PropertyGroup>` in
-`src/DotGreaterPopup/DotGreaterPopup.csproj`:
-
-    <ApplicationManifest>app.manifest</ApplicationManifest>
-
-then rebuild the Release exe.
+`src/DotGreaterPopup/app.manifest` pins `asInvoker` (no UAC prompt) with
+per-monitor DPI awareness. It is wired into the build via
+`<ApplicationManifest>` in
+`src/DotGreaterPopup/DotGreaterPopup.csproj`, so the Release exe picks it
+up automatically.
 
 ## MANUAL MATRIX (run on your Windows laptop, tick each row)
 
 Release build:
 
-- [ ] `msbuild DotGreaterPopup.sln /p:Configuration=Release` succeeds; one
-  small `Release/DotGreaterPopup.exe` exists and launches on stock Win10/11
-  with no extra install (tray icon appears, no console window).
+- [ ] `dotnet build DotGreaterPopup.sln -c Release` succeeds; one small
+  `src\DotGreaterPopup\bin\Release\net48\DotGreaterPopup.exe` exists and
+  launches on stock Win10/11 with no extra install (tray icon appears, no
+  console window).
 
 Task 2 - live SendInput typing (proves the INPUT union layout by typing):
 
