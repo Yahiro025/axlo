@@ -29,6 +29,12 @@ namespace DotGreaterPopup
         private const int ButtonWidth = 64;
         private const int ButtonHeight = 48;
 
+        // axlo brand tokens (DESIGN.md): Fluent blue actions, neutral frame.
+        private static readonly Color AxloPrimary = Color.FromArgb(0x0F, 0x6C, 0xBD);
+        private static readonly Color AxloPrimaryHover = Color.FromArgb(0x0B, 0x5A, 0x9E);
+        private static readonly Color AxloPrimaryPress = Color.FromArgb(0x08, 0x46, 0x7A);
+        private static readonly Color AxloBorder = Color.FromArgb(0xE1, 0xDF, 0xDD);
+
         private readonly Action<char> _onPick;
 
         // One-shot re-pin: the low-level hook fires before the target app
@@ -54,8 +60,14 @@ namespace DotGreaterPopup
             StartPosition = FormStartPosition.Manual;
             KeyPreview = true;
 
+            // axlo brand frame: the form background shows through a 1px
+            // padding as a Fluent-neutral border around the white face.
+            BackColor = AxloBorder;
+            Padding = new Padding(1);
+
             var panel = new FlowLayoutPanel();
             panel.Dock = DockStyle.Fill;
+            panel.BackColor = Color.White;
             panel.FlowDirection = FlowDirection.LeftToRight;
             panel.WrapContents = false;
             panel.Padding = new Padding(8);
@@ -67,7 +79,15 @@ namespace DotGreaterPopup
                 char ch = c;
                 var button = new Button();
                 button.Text = ch.ToString();
-                button.Font = new Font(button.Font.FontFamily, 16f, FontStyle.Bold);
+                // axlo action style (DESIGN.md popup component): Segoe UI
+                // semibold glyph on Fluent blue, darker on hover/press.
+                button.Font = new Font("Segoe UI", 16f, FontStyle.Bold);
+                button.FlatStyle = FlatStyle.Flat;
+                button.BackColor = AxloPrimary;
+                button.ForeColor = Color.White;
+                button.FlatAppearance.BorderSize = 0;
+                button.FlatAppearance.MouseOverBackColor = AxloPrimaryHover;
+                button.FlatAppearance.MouseDownBackColor = AxloPrimaryPress;
                 button.Size = new Size(ButtonWidth, ButtonHeight);
                 button.MinimumSize = new Size(ButtonWidth, ButtonHeight);
                 button.Margin = new Padding(4);
