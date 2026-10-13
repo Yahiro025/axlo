@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <!-- WinExe: Program.cs (Task 5) provides the Main entry point, so this
+         builds as a windowed exe with no console window. -->
+    <OutputType>WinExe</OutputType>
+    <UseWindowsForms>true</UseWindowsForms>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <AssemblyName>DotGreaterPopup</AssemblyName>
+    <RootNamespace>DotGreaterPopup</RootNamespace>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <!-- axlo dot-o mark (docs/design/axlo-mark.svg master). -->
+    <ApplicationIcon>axlo.ico</ApplicationIcon>
+  </PropertyGroup>
+
+</Project>

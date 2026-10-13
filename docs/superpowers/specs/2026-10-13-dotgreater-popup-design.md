@@ -11,13 +11,17 @@ clicking one types that character into any field, including Windows itself.
 
 ## Decisions locked
 
+> Amendment 2026-10-13: fallback is Win+Shift+J, not Win+J. Win+J is
+> commonly claimed by other tools (found held on this laptop), and
+> Win+Shift+J probed free. Tray "Show now" remains as a third path.
+
 - System-wide on Windows, any text field.
 - Keep native context menu, show popup alongside it (no click swallowing).
 - Popup auto-closes on type / click-away / Esc.
 - Autostart with Windows, tray icon.
 - Stack: C# WinForms, `net48`, ~100KB exe, no runtime install.
 - Fallback trigger required (double-right-click can hit a menu item by accident):
-  `Win+J` opens the same popup. Fallback must not need `.` or `>`.
+  `Win+Shift+J` opens the same popup. Fallback must not need `.` or `>`.
 
 ## Shape
 
@@ -31,7 +35,7 @@ clicking one types that character into any field, including Windows itself.
 - `CharTyper.Insert(char)`: validates against `CharSet`, sends
   `SendInput(KEYEVENTF_UNICODE)` for `U+002E` / `U+003E`.
 - `AutostartManager`: `HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run` only.
-- `HotkeyManager`: `RegisterHotKey(MOD_WIN, VK_J)` → same `ShowAt(cursor)`.
+- `HotkeyManager`: `RegisterHotKey(MOD_WIN|MOD_SHIFT, VK_J)` → same `ShowAt(cursor)`.
 - Pure testable helpers (no Win32): `DoubleClickDecision.ShouldFire(...)`,
   `PopupPosition.Clamp(...)`.
 

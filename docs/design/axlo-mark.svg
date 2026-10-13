@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <title>axlo dot-o mark</title>
+  <!-- Master artwork for the axlo tray/app icon: Fluent-blue dot with a
+       knocked-out chevron. Geometry matches DESIGN.md Preview A.
+       Raster exports (axlo-16/24/32/48/256.png) and axlo.ico are generated
+       from this geometry; do not redraw by hand at small sizes. -->
+  <circle cx="16" cy="16" r="14" fill="#0F6CBD"/>
+  <path d="M12.5 10.5 L20 16 L12.5 21.5" stroke="#FFFFFF" stroke-width="3.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
